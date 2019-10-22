@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-//const env = require('get-env')();
+const env = require('get-env')();
 const brouter = require('./blogs');
 const mongoose = require('mongoose');
 const blogSchema = require('./blogSchema');
@@ -26,12 +26,10 @@ mongoose.connect(
 const connection = mongoose.connection;
 connection.on('error', console.error.bind(console, 'connection error:'));
 connection.once('open', function() {
-  Blog.findOne({ type: 'articles' }, (err, adventure) => {
-    if (err) {
-      console.log('Some shit happened');
-    } else {
-      const b = Blog.findOne({ author: 'Mikheil Blavatsky' });
-      // console.log(b);
-    }
+  console.log('Connected!');
+  const query = new mongoose.Query();
+  query.collection = Blog.collection;
+  query.where('author', 'Mikheil Blavatsky').exec(elem => {
+    console.log(elem);
   });
 });
